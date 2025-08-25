@@ -1,9 +1,9 @@
-import * as cdk from 'aws-cdk-lib'
-import { Stack, StackProps } from 'aws-cdk-lib'
-import * as s3 from 'aws-cdk-lib/aws-s3'
-import * as dynamodb from 'aws-cdk-lib/aws-dynamodb'
-import { RemovalPolicy } from 'aws-cdk-lib'
-import { Construct } from 'constructs'
+import * as cdk from 'aws-cdk-lib';
+import { Stack, StackProps } from 'aws-cdk-lib';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
+import { RemovalPolicy } from 'aws-cdk-lib';
+import { Construct } from 'constructs';
 
 /**
  * Terraform S3 Backend Deployment
@@ -16,12 +16,12 @@ export class TerraformBackendStack extends Stack {
     props?: StackProps,
     appName = 'terraform-backend'
   ) {
-    super(scope, id, props)
+    super(scope, id, props);
 
-    const accountId = cdk.Stack.of(this).account
+    const accountId = cdk.Stack.of(this).account;
 
-    const defaultBucketName = `${appName}-state-storage-${accountId}`
-    const defaultDynamoDBTableName = `${appName}-state-lock-${accountId}`
+    const defaultBucketName = `${appName}-state-storage-${accountId}`;
+    const defaultDynamoDBTableName = `${appName}-state-lock-${accountId}`;
 
     // https://developer.hashicorp.com/terraform/language/state
     const terraformStateBucket = new s3.Bucket(this, 'TerraformStateStorage', {
@@ -37,7 +37,7 @@ export class TerraformBackendStack extends Stack {
         },
       ],
       enforceSSL: true,
-    })
+    });
 
     // https://developer.hashicorp.com/terraform/language/state/locking
     const terraformLockTable = new dynamodb.Table(this, 'TerraformStateLock', {
@@ -45,23 +45,25 @@ export class TerraformBackendStack extends Stack {
       partitionKey: { name: 'LockID', type: dynamodb.AttributeType.STRING },
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
       removalPolicy: RemovalPolicy.RETAIN, // Retain the table when the stack is deleted
-      pointInTimeRecovery: true, // Enable Point-In-Time Recovery
+      pointInTimeRecoverySpecification: {
+        pointInTimeRecoveryEnabled: true,
+      }, // Enable Point-In-Time Recovery
       deletionProtection: true,
       encryption: dynamodb.TableEncryption.AWS_MANAGED,
-    })
+    });
 
     // Outputs
     new cdk.CfnOutput(this, 'S3Bucket', {
       value: terraformStateBucket.bucketArn,
       description: 'The ARN of the S3 bucket used for Terraform state storage',
       exportName: `${appName}-bucket-arn`,
-    })
+    });
 
     new cdk.CfnOutput(this, 'DynamoDBTable', {
       value: terraformLockTable.tableArn,
       description:
         'The ARN of the DynamoDB table used for Terraform state locking',
       exportName: `${appName}-table-arn`,
-    })
+    });
   }
 }

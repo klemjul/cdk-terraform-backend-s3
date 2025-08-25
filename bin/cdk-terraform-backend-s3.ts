@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-import * as cdk from 'aws-cdk-lib'
-import { TerraformBackendStack } from '../lib/terraform-backend-stack'
+import * as cdk from 'aws-cdk-lib';
+import { TerraformBackendStack } from '../lib/terraform-backend-stack';
 
-const app = new cdk.App()
+const app = new cdk.App();
 new TerraformBackendStack(app, 'TerraformBackendStack', {
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,
@@ -14,4 +14,4 @@ new TerraformBackendStack(app, 'TerraformBackendStack', {
    * want to deploy the stack to. */
   // env: { account: '123456789012', region: 'us-east-1' },
   /* For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html */
-})
+});
