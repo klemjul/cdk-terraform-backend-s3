@@ -11,19 +11,19 @@
     "lint:fix": "eslint --fix ."
   },
   "devDependencies": {
-    "@types/node": "24.3.0",
-    "aws-cdk": "2.1026.0",
-    "eslint": "9.34.0",
+    "@types/node": "24.10.2",
+    "aws-cdk": "2.1033.0",
+    "eslint": "9.39.1",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.4",
-    "globals": "16.3.0",
-    "jiti": "2.5.1",
+    "globals": "16.5.0",
+    "jiti": "2.6.1",
     "ts-node": "10.9.2",
-    "typescript": "5.9.2",
-    "typescript-eslint": "8.40.0"
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.49.0"
   },
   "dependencies": {
-    "aws-cdk-lib": "2.212.0",
-    "constructs": "10.4.2"
+    "aws-cdk-lib": "2.232.1",
+    "constructs": "10.4.3"
   }
 }
